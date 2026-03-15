@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Flying's pictures (自訂圖片)</title>
+    <style>
+        body{margin:0;overflow:hidden;background:#111;font-family:sans-serif;color:white;}
+        #controls{position:fixed;top:10px;left:50%;transform:translateX(-50%);text-align:center;}
+        input, select, button{padding:8px;margin:5px;font-size:16px;}
+        img{position:absolute;}
+    </style>
+</head>
+<body>
+
+<div id="controls">
+    <input type="text" id="imgURL" placeholder="輸入圖片網址" />
+    <button onclick="start()">開始飛舞</button>
+</div>
+
+<script>
+    function start(){
+        const url=document.getElementById('imgURL').value;
+        if(!url) return;
+
+        function spawn(){
+            const s=document.createElement("img");
+            s.src=url;
+            let size=70+Math.random()*130;
+            s.style.width=size+"px";
+            s.style.opacity=0.75+Math.random()*0.25;
+            document.body.appendChild(s);
+
+            let x=Math.random()*innerWidth;
+            let y=Math.random()*innerHeight;
+            let dx=(Math.random()-0.5)*6;
+            let dy=(Math.random()-0.5)*6;
+            s.style.left=x+"px";
+            s.style.top=y+"px";
+
+            const a=setInterval(()=>{
+                x+=dx;
+                y+=dy;
+                size+=(Math.random()-0.5)*5;
+                if(size<70)size=70;
+                if(size>200)size=200;
+                s.style.width=size+"px";
+                s.style.left=x+"px";
+                s.style.top=y+"px";
+                if(x<-200||x>innerWidth+200||y<-200||y>innerHeight+200){
+                    clearInterval(a);
+                    s.remove();
+                }
+            },30);
+        }
+        setInterval(spawn,200);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Flying's pictures (愛心 綜合顏色)</title>
+    <style>
+        body{margin:0;overflow:hidden;background:#111;}
+        span{position:absolute;display:inline-block;}
+        svg{width:100%;height:100%;}
+    </style>
+</head>
+<body>
+
+<script>
+
+    const colors=[0,30,60,90,120,150,180,210,240,270,300,330];
+
+    function spawn(){
+
+        const s=document.createElement("span");
+
+        let size=70+Math.random()*130;
+
+        s.style.width=size+"px";
+        s.style.height=size+"px";
+
+        let color=`hsl(${colors[Math.floor(Math.random()*colors.length)]},100%,50%)`;
+
+        s.innerHTML=`<svg viewBox="0 0 32 29">
+<path fill="${color}" d="M23.6,0c-3.4,0-6.4,2-7.6,5.1C14.8,2,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z"/>
+</svg>`;
+
+        s.style.opacity=0.75+Math.random()*0.25;
+
+        document.body.appendChild(s);
+
+        let x=Math.random()*innerWidth;
+        let y=Math.random()*innerHeight;
+
+        let dx=(Math.random()-0.5)*6;
+        let dy=(Math.random()-0.5)*6;
+
+        s.style.left=x+"px";
+        s.style.top=y+"px";
+
+        const a=setInterval(()=>{
+
+            x+=dx;
+            y+=dy;
+
+            size+=(Math.random()-0.5)*5;
+
+            if(size<70)size=70;
+            if(size>200)size=200;
+
+            s.style.width=size+"px";
+            s.style.height=size+"px";
+
+            s.style.left=x+"px";
+            s.style.top=y+"px";
+
+            if(x<-200||x>innerWidth+200||y<-200||y>innerHeight+200){
+                clearInterval(a);
+                s.remove();
+            }
+
+        },30);
+
+    }
+
+    setInterval(spawn,200);
+
+</script>
+
+</body>
+</html>

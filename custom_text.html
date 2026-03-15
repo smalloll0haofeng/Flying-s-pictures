@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>Flying's pictures (自訂文字)</title>
+    <style>
+        body{margin:0;overflow:hidden;background:#111;font-family:sans-serif;color:white;}
+        #controls{position:fixed;top:10px;left:50%;transform:translateX(-50%);text-align:center;}
+        input, select, button{padding:8px; margin:5px; font-size:16px;}
+        span{position:absolute;font-weight:bold;}
+    </style>
+</head>
+<body>
+
+<div id="controls">
+    <input type="text" id="userText" placeholder="輸入想飛舞的文字" />
+    <select id="colorMode">
+        <option value="warm">暖色</option>
+        <option value="cold">冷色</option>
+    </select>
+    <button onclick="start()">開始飛舞</button>
+</div>
+
+<script>
+    function start(){
+        const text=document.getElementById('userText').value || "✨";
+        const mode=document.getElementById('colorMode').value;
+        const colors = mode==="warm"? [0,10,20,30,40,50] : [180,200,220,240,260,280];
+
+        function spawn(){
+            const s=document.createElement("span");
+            s.textContent=text;
+            let size=70+Math.random()*130;
+            s.style.fontSize=size+"px";
+            s.style.color=`hsl(${colors[Math.floor(Math.random()*colors.length)]},100%,50%)`;
+            s.style.opacity=0.75+Math.random()*0.25;
+            document.body.appendChild(s);
+
+            let x=Math.random()*innerWidth;
+            let y=Math.random()*innerHeight;
+            let dx=(Math.random()-0.5)*6;
+            let dy=(Math.random()-0.5)*6;
+            s.style.left=x+"px";
+            s.style.top=y+"px";
+
+            const a=setInterval(()=>{
+                x+=dx;
+                y+=dy;
+                size+=(Math.random()-0.5)*5;
+                if(size<70)size=70;
+                if(size>200)size=200;
+                s.style.fontSize=size+"px";
+                s.style.left=x+"px";
+                s.style.top=y+"px";
+                if(x<-200||x>innerWidth+200||y<-200||y>innerHeight+200){
+                    clearInterval(a);
+                    s.remove();
+                }
+            },30);
+        }
+        setInterval(spawn,200);
+    }
+</script>
+
+</body>
+</html>
